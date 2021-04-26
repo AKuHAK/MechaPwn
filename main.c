@@ -180,7 +180,7 @@ int drawMenu(struct MENU *menu)
     }
 }
 
-uint8_t region_keyseed[]                = {0x4d, 0x65, 0x63, 0x68, 0x61, 0x50, 0x77, 0x6e, 0x00, 0xec};
+uint8_t region_keyseed[]                = {0x4d, 0x65, 0x63, 0x68, 0x61, 0x50, 0x77, 0x6e, 0x00, 0xec}; // MechaPwn +00 EC
 uint8_t region_ciphertext_dex[]         = {0x1a, 0x74, 0xac, 0xb2, 0xb0, 0xae, 0x15, 0xdf, 0x00, 0xc1};
 
 // 0 - Japan
@@ -237,7 +237,8 @@ void sum_buffer(uint8_t *buffer, int length)
     buffer[length - 1] = ~sum;
 }
 
-char write_region(uint8_t *region_params, uint8_t *model_number, uint8_t *region_ciphertext)
+// char write_region(uint8_t *region_params, uint8_t *model_number, uint8_t *region_ciphertext)
+char write_region(uint8_t *region_params, uint8_t *region_ciphertext)
 {
     if (region_params)
     {
@@ -246,12 +247,12 @@ char write_region(uint8_t *region_params, uint8_t *model_number, uint8_t *region
                 break;
     }
 
-    if (model_number)
+    /*     if (model_number)
     {
         for (int i = 0; i < 18; i += 2)
             if (!WriteNVM(216 + i / 2, *(uint16_t *)&model_number[i]))
                 break;
-    }
+    } */
 
     if (region_ciphertext)
     {
@@ -295,6 +296,7 @@ void selectCexDex(char *isDex)
 }
 
 
+/*
 void selectModel(char isDex, char *isSlim, char *model)
 {
     if (isDex)
@@ -372,9 +374,12 @@ void selectModel(char isDex, char *isSlim, char *model)
         *isSlim = 1;
     }
 }
+*/
 
-void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params, uint8_t **region_ciphertext);
-void selectRegion(char isDex, char isSlim, char *model, uint8_t **region_params, uint8_t **region_ciphertext)
+// void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params, uint8_t **region_ciphertext);
+// void selectRegion(char isDex, char isSlim, char *model, uint8_t **region_params, uint8_t **region_ciphertext)
+void selectRegion2(char isDex, char isSlim, uint8_t **region_params, uint8_t **region_ciphertext);
+void selectRegion(char isDex, char isSlim, uint8_t **region_params, uint8_t **region_ciphertext)
 {
     gsKit_clear(gsGlobal, Black);
 
@@ -384,12 +389,12 @@ void selectRegion(char isDex, char isSlim, char *model, uint8_t **region_params,
     menu.o_text       = "O Exit";
     menu.option_count = 7;
 
-    for (int i = 0; i < 6; i++)
+    /*     for (int i = 0; i < 6; i++)
     {
         char *option = malloc(20);
         strcpy(option, model);
         menu.options[i] = option;
-    }
+    } */
 
     strcat((char *)menu.options[0], "000 - Japan");
     strcat((char *)menu.options[1], "001 - USA");
@@ -412,8 +417,8 @@ void selectRegion(char isDex, char isSlim, char *model, uint8_t **region_params,
     }
     else if (selected == 0)
     {
-        strcat(model, "000");
-        sum_buffer((uint8_t *)model, 18);
+        // strcat(model, "000");
+        // sum_buffer((uint8_t *)model, 18);
         if (isSlim)
             *region_params = region_params_japan;
         if (isDex)
@@ -423,8 +428,8 @@ void selectRegion(char isDex, char isSlim, char *model, uint8_t **region_params,
     }
     else if (selected == 1)
     {
-        strcat(model, "001");
-        sum_buffer((uint8_t *)model, 18);
+        // strcat(model, "001");
+        // sum_buffer((uint8_t *)model, 18);
         if (isSlim)
             *region_params = region_params_usa;
         if (isDex)
@@ -434,8 +439,8 @@ void selectRegion(char isDex, char isSlim, char *model, uint8_t **region_params,
     }
     else if (selected == 2)
     {
-        strcat(model, "002");
-        sum_buffer((uint8_t *)model, 18);
+        // strcat(model, "002");
+        // sum_buffer((uint8_t *)model, 18);
         if (isSlim)
             *region_params = region_params_oceania;
         if (isDex)
@@ -445,8 +450,8 @@ void selectRegion(char isDex, char isSlim, char *model, uint8_t **region_params,
     }
     else if (selected == 3)
     {
-        strcat(model, "003");
-        sum_buffer((uint8_t *)model, 18);
+        // strcat(model, "003");
+        // sum_buffer((uint8_t *)model, 18);
         if (isSlim)
             *region_params = region_params_europe;
         if (isDex)
@@ -456,8 +461,8 @@ void selectRegion(char isDex, char isSlim, char *model, uint8_t **region_params,
     }
     else if (selected == 4)
     {
-        strcat(model, "004");
-        sum_buffer((uint8_t *)model, 18);
+        // strcat(model, "004");
+        // sum_buffer((uint8_t *)model, 18);
         if (isSlim)
             *region_params = region_params_europe;
         if (isDex)
@@ -467,8 +472,8 @@ void selectRegion(char isDex, char isSlim, char *model, uint8_t **region_params,
     }
     else if (selected == 5)
     {
-        strcat(model, "005");
-        sum_buffer((uint8_t *)model, 18);
+        // strcat(model, "005");
+        // sum_buffer((uint8_t *)model, 18);
         if (isSlim)
             *region_params = region_params_korea;
         if (isDex)
@@ -478,11 +483,13 @@ void selectRegion(char isDex, char isSlim, char *model, uint8_t **region_params,
     }
     else if (selected == 6)
     {
-        return selectRegion2(isDex, isSlim, model, region_params, region_ciphertext);
+        // return selectRegion2(isDex, isSlim, model, region_params, region_ciphertext);
+        return selectRegion2(isDex, isSlim, region_params, region_ciphertext);
     }
 }
 
-void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params, uint8_t **region_ciphertext)
+// void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params, uint8_t **region_ciphertext)
+void selectRegion2(char isDex, char isSlim, uint8_t **region_params, uint8_t **region_ciphertext)
 {
     gsKit_clear(gsGlobal, Black);
 
@@ -492,14 +499,14 @@ void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params
     menu.o_text       = "O Exit";
     menu.option_count = (isSlim ? 7 : 6);
 
-    for (int i = 1; i < (isSlim ? 7 : 6); i++)
-    {
-        char *option = malloc(20);
-        strcpy(option, model);
-        menu.options[i] = option;
-    }
+    // for (int i = 1; i < (isSlim ? 7 : 6); i++)
+    // {
+    // char *option = malloc(20);
+    // strcpy(option, model);
+    // menu.options[i] = option;
+    // }
 
-    menu.options[0] = "Back";
+    menu.options[0]   = "Back";
     strcat((char *)menu.options[1], "006 - Asia");
     strcat((char *)menu.options[2], "007 - Tawain");
     strcat((char *)menu.options[3], "008 - Russia");
@@ -528,12 +535,13 @@ void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params
     }
     else if (selected == 0)
     {
-        return selectRegion(isDex, isSlim, model, region_params, region_ciphertext);
+        // return selectRegion(isDex, isSlim, model, region_params, region_ciphertext);
+        return selectRegion(isDex, isSlim, region_params, region_ciphertext);
     }
     else if (selected == 1)
     {
-        strcat(model, "006");
-        sum_buffer((uint8_t *)model, 18);
+        // strcat(model, "006");
+        // sum_buffer((uint8_t *)model, 18);
         if (isSlim)
             *region_params = region_params_asia;
         if (isDex)
@@ -543,8 +551,8 @@ void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params
     }
     else if (selected == 2)
     {
-        strcat(model, "007");
-        sum_buffer((uint8_t *)model, 18);
+        // strcat(model, "007");
+        // sum_buffer((uint8_t *)model, 18);
         if (isSlim)
             *region_params = region_params_tawain;
         if (isDex)
@@ -554,8 +562,8 @@ void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params
     }
     else if (selected == 3)
     {
-        strcat(model, "008");
-        sum_buffer((uint8_t *)model, 18);
+        // strcat(model, "008");
+        // sum_buffer((uint8_t *)model, 18);
         if (isSlim)
             *region_params = region_params_russia;
         if (isDex)
@@ -567,8 +575,8 @@ void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params
     {
         if (!isSlim)
         {
-            strcat(model, "009");
-            sum_buffer((uint8_t *)model, 18);
+            // strcat(model, "009");
+            // sum_buffer((uint8_t *)model, 18);
             if (isDex)
                 *region_ciphertext = region_ciphertext_dex;
             else
@@ -576,8 +584,8 @@ void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params
         }
         else
         {
-            strcat(model, "010");
-            sum_buffer((uint8_t *)model, 18);
+            // strcat(model, "010");
+            // sum_buffer((uint8_t *)model, 18);
             *region_params = region_params_usa;
             if (isDex)
                 *region_ciphertext = region_ciphertext_dex;
@@ -589,8 +597,8 @@ void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params
     {
         if (!isSlim)
         {
-            strcat(model, "011");
-            sum_buffer((uint8_t *)model, 18);
+            // strcat(model, "011");
+            // sum_buffer((uint8_t *)model, 18);
             if (isDex)
                 *region_ciphertext = region_ciphertext_dex;
             else
@@ -598,8 +606,8 @@ void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params
         }
         else
         {
-            strcat(model, "011");
-            sum_buffer((uint8_t *)model, 18);
+            // strcat(model, "011");
+            // sum_buffer((uint8_t *)model, 18);
             *region_params = region_params_usa;
             if (isDex)
                 *region_ciphertext = region_ciphertext_dex;
@@ -609,8 +617,8 @@ void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params
     }
     else if (selected == 6)
     {
-        strcat(model, "012");
-        sum_buffer((uint8_t *)model, 18);
+        // strcat(model, "012");
+        // sum_buffer((uint8_t *)model, 18);
         *region_params = region_params_usa;
         if (isDex)
             *region_ciphertext = region_ciphertext_dex;
@@ -622,14 +630,16 @@ void selectRegion2(char isDex, char isSlim, char *model, uint8_t **region_params
 void setRegion(char *isDex)
 {
     selectCexDex(isDex);
-    char isSlim = 0;
-    char model[18];
-    selectModel(*isDex, &isSlim, model);
+    char isSlim                = 0;
+    // char model[18];
+    // selectModel(*isDex, &isSlim, model);
     uint8_t *region_params     = 0;
     uint8_t *region_ciphertext = 0;
-    selectRegion(*isDex, isSlim, model, &region_params, &region_ciphertext);
+    // selectRegion(*isDex, isSlim, model, &region_params, &region_ciphertext);
+    selectRegion(*isDex, isSlim, &region_params, &region_ciphertext);
 
-    write_region(region_params, (uint8_t *)model, region_ciphertext);
+    // write_region(region_params, (uint8_t *)model, region_ciphertext);
+    write_region(region_params, region_ciphertext);
 }
 
 uint8_t *frames[] = {
@@ -707,7 +717,7 @@ char backupNVM()
         menu.o_text       = "O Exit";
         menu.option_count = 2;
 
-        menu.options[0]   = "Create a new backup";
+        menu.options[0]   = "Overwrite an old backup";
         menu.options[1]   = "Keep the current backup";
 
         int selected      = drawMenu(&menu);
