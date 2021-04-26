@@ -21,7 +21,7 @@ Older Playstation 2 units do NOT use a Dragon based mechacon and therefore are n
 
 0) Make sure if you are using FMCB **you have v1.966 "multi install" installed**.
 
-1) Run Mechapwn once to install the exploit patch/payload an initial backup of your mechacon eeprom will be made to the usb mass storage device (keep it safe!),then power off the console by disconnecting it from the mains when asked (mechacon is on even when the ps2 cpu is off, so you really need to disconnect the power chord!) 
+1) Run Mechapwn once to install the exploit patch/payload an initial backup of your mechacon eeprom will be made to the usb mass storage device (keep it safe!),then power off the console by disconnecting it from the mains when asked (mechacon is on even when the ps2 cpu is off, so you really need to disconnect the power chord!)
 2) Run Mechapwn again to choose which region you want.
 3) Choose whether you want to use force unlock or restore the original patch set (and uninstall the exploit patch) from your mechacon backup.
 
@@ -82,14 +82,14 @@ On SCPH-7500X and later models (also known as Deckard consoles)
 * BOOT PS1 disc originals from all regions
 
 
-FAQ: 
+FAQ:
 
 ### Why do PAL/NTSC-J consoles do not play NTSC/PAL discs (on scph-70000 and earlier) ?
 
 The IOP ROM on those consoles have enforced strict logo decryption checks both in the PS1 and PS2 BIOS which the NTSC-U (also used in ASIA consoles) BIOS does not have.
 
 
-### Why do consoles not run masterdiscs directly from the OSD? 
+### Why do consoles not run masterdiscs directly from the OSD?
 
 An additional protection exists on the DSP, which is different in retail and debug consoles, the debug one allows mechacon to store the masterdisc xor key in its registers, the retail one does not.
 Bypassing the logo check bypasses this protection (this can be done using ule or a future cdvdman patch using a ps2 homebrew)

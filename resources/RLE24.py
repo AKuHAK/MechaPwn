@@ -106,14 +106,14 @@ def decodeRLE24(rle, size):
 	pos = 0
 	x = 0
 	y = 0
-	
+
 	hw = 0
 	while hw < height * width:
 		count = unpack("B", rle[pos : pos + 1])[0]
 		pos += 1
 		repeat_run = count & 0x80
 		count = (count & 0x7f) + 1
-		
+
 		for i in range(count):
 			b, g, r = unpack("BBB", rle[pos : pos + 3])
 			pixels[x, y] = r, g, b
@@ -125,7 +125,7 @@ def decodeRLE24(rle, size):
 
 		if repeat_run:
 			pos += 3
-			
+
 		if x == width + 0:
 			y += 1
 			x = 0

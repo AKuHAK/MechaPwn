@@ -33,7 +33,7 @@ elif img.mode == "RGBA":
 else:
 	print ("sorry, can't support this format")
 	sys.exit()
-	
+
 #r, g, b = background.split()
 #data = Image.merge("RGB", (r, g, b)).tobytes()
 
