@@ -1089,11 +1089,11 @@ int main()
     struct GSTEXTURE_holder *rerunTextures  = 0;
     if (rerun)
     {
-        const char *text = "Run MechaPwn again.";
-        int x, y;
-        getTextSize(42, text, &x, &y);
-        y += 42;
-        rerunTextures = draw_text((gsGlobal->Width - x) / 2, ((gsGlobal->Height - (195)) / 2) + 225, 42, 0xFFFFFF, text);
+        const char *text1 = "Run MechaPwn again.";
+        int x1, y1;
+        getTextSize(42, text1, &x1, &y1);
+        y1 += 42;
+        rerunTextures = draw_text((gsGlobal->Width - x1) / 2, ((gsGlobal->Height - (195)) / 2) + 225, 42, 0xFFFFFF, text1);
     }
 
     drawFrame();

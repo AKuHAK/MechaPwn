@@ -1,5 +1,5 @@
 ---
-Language:        Cpp
+Language: Cpp
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: AcrossEmptyLinesAndComments
@@ -7,7 +7,7 @@ AlignConsecutiveBitFields: AcrossEmptyLinesAndComments
 AlignConsecutiveDeclarations: None
 AlignConsecutiveMacros: AcrossEmptyLinesAndComments
 AlignEscapedNewlinesLeft: Left
-AlignOperands:   Align
+AlignOperands: Align
 AlignTrailingComments: true
 AllowAllArgumentsOnNextLine: true
 AllowAllConstructorInitializersOnNextLine: true
@@ -24,46 +24,46 @@ AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: true
 BinPackArguments: true
 BinPackParameters: true
-BitFieldColonSpacing : Both
+BitFieldColonSpacing: Both
 BreakBeforeBraces: Custom
 BraceWrapping:
-  AfterCaseLabel:        true
-  AfterClass:            true
+  AfterCaseLabel: true
+  AfterClass: true
   AfterControlStatement: Always
-  AfterEnum:             true
-  AfterFunction:         true
-  AfterNamespace:        true
-  AfterObjCDeclaration:  true
-  AfterStruct:           true
-  AfterUnion:            true
-  AfterExternBlock:      false
-  BeforeCatch:           false
-  BeforeElse:            true
-  BeforeLambdaBody:      true
-  BeforeWhile:           false
-  IndentBraces:          false
-  SplitEmptyFunction:    true
-  SplitEmptyRecord:      true
-  SplitEmptyNamespace:   true
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterObjCDeclaration: true
+  AfterStruct: true
+  AfterUnion: true
+  AfterExternBlock: false
+  BeforeCatch: false
+  BeforeElse: true
+  BeforeLambdaBody: true
+  BeforeWhile: false
+  IndentBraces: false
+  SplitEmptyFunction: true
+  SplitEmptyRecord: true
+  SplitEmptyNamespace: true
 BreakBeforeBinaryOperators: None
 BreakBeforeTernaryOperators: false
 BreakConstructorInitializers: BeforeComma
-ColumnLimit:     0
-CommentPragmas:  '^ (IWYU pragma:|NOLINT)'
+ColumnLimit: 0
+CommentPragmas: "^ (IWYU pragma:|NOLINT)"
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
 Cpp11BracedListStyle: true
 DerivePointerAlignment: false
-DisableFormat:   false
-ForEachMacros:   []
+DisableFormat: false
+ForEachMacros: []
 IndentExternBlock: NoIndent
 IndentCaseLabels: true
-IndentWidth:     4
+IndentWidth: 4
 IndentWrappedFunctionNames: false
 KeepEmptyLinesAtTheStartOfBlocks: true
-MacroBlockBegin: ''
-MacroBlockEnd:   ''
+MacroBlockBegin: ""
+MacroBlockEnd: ""
 MaxEmptyLinesToKeep: 3
 NamespaceIndentation: None
 ObjCBlockIndentWidth: 2
@@ -76,18 +76,18 @@ PenaltyBreakString: 1000
 PenaltyExcessCharacter: 1000000
 PenaltyReturnTypeOnItsOwnLine: 60
 PointerAlignment: Right
-ReflowComments:  true
-SortIncludes:    false
+ReflowComments: true
+SortIncludes: false
 SpaceAfterCStyleCast: false
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeParens: ControlStatements
 SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 1
-SpacesInAngles:  false
+SpacesInAngles: false
 SpacesInContainerLiterals: true
 SpacesInCStyleCastParentheses: false
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
-Standard:        Cpp11
-TabWidth:        4
-UseTab:          Never
+Standard: Cpp11
+TabWidth: 4
+UseTab: Never
