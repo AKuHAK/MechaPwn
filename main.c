@@ -356,6 +356,7 @@ void selectRegion(char isDex, uint8_t **region_params, uint8_t **region_cipherte
     uint8_t version[4];
     uint8_t isSlim    = 0;
     uint8_t isDeckard = 0;
+
     getMechaVersion(version);
     if (version[1] == 6)
         isSlim = 1;
@@ -384,112 +385,107 @@ void selectRegion(char isDex, uint8_t **region_params, uint8_t **region_cipherte
         selected          = drawMenu(&menu);
     }
 
-    if (selected == -1)
+    switch (selected)
     {
-        ResetIOP();
-        Exit(0);
-        SleepThread();
-    }
-    else
-    {
-        if (selected == 0)
-        {
+        case 0:
             *region_params     = region_params_usa;
             *region_ciphertext = isDex ? region_ciphertext_usa_dex : region_ciphertext_usa_cex;
             *video_config      = ntsc_defaults;
-        }
-        else if (selected == 1)
-        {
+            break;
+        case 1:
             *region_params     = region_params_asia;
             *region_ciphertext = isDex ? region_ciphertext_asia_dex : region_ciphertext_asia_cex;
             *video_config      = ntsc_defaults;
-        }
-        else if (selected == 2)
-        {
+            break;
+        case 2:
             *region_params     = region_params_korea;
             *region_ciphertext = isDex ? region_ciphertext_asia_dex : region_ciphertext_asia_cex;
             *video_config      = ntsc_defaults;
-        }
-        else if (selected == 3)
-        {
+            break;
+        case 3:
             *region_params     = region_params_taiwan;
             *region_ciphertext = isDex ? region_ciphertext_asia_dex : region_ciphertext_asia_cex;
             *video_config      = ntsc_defaults;
-        }
-        else if (selected == 4)
-        {
+            break;
+        case 4:
             *region_params     = region_params_japan;
             *region_ciphertext = isDex ? region_ciphertext_japan_dex : region_ciphertext_japan_cex;
             *video_config      = ntsc_defaults;
-        }
-        else if (selected == 5)
-        {
+            break;
+        case 5:
             *region_params     = region_params_mexico;
             *region_ciphertext = isDex ? region_ciphertext_mexico_dex : region_ciphertext_mexico_cex;
             *video_config      = ntsc_defaults;
-        }
-        else if (selected == 6)
-        {
+            break;
+        case 6:
             *region_params     = region_params_europe;
             *region_ciphertext = isDex ? region_ciphertext_europe_dex : region_ciphertext_europe_cex;
             *video_config      = pal_defaults;
-        }
-        else if (selected == 7)
-        {
+            break;
+        case 7:
             *region_params     = region_params_oceania;
             *region_ciphertext = isDex ? region_ciphertext_oceania_dex : region_ciphertext_oceania_cex;
             *video_config      = pal_defaults;
-        }
-        else if (selected == 8)
-        {
+            break;
+        case 8:
             *region_params     = region_params_russia;
             *region_ciphertext = isDex ? region_ciphertext_russia_dex : region_ciphertext_russia_cex;
             *video_config      = pal_defaults;
-        }
-        else if (selected == 9)
-        {
-            *region_params     = region_params_china;
-            *region_ciphertext = isDex ? region_ciphertext_china_dex : region_ciphertext_china_cex;
-            *video_config      = ntsc_defaults;
-        }
+            break;
+        default:
+            ResetIOP();
+            Exit(0);
+            SleepThread();
+            break;
+            break;
+    }
 
-        if (isDex)
-        {
-            region_params[0][0] = 0x41; // A - PS2 disable checks
-            region_params[0][5] = 0x41; // A - PS1 disable checks
-        }
+    if (isDex)
+    {
+        region_params[0][0] = 0x41; // A - PS2 disable checks
+        region_params[0][5] = 0x41; // A - PS1 disable checks
+    }
 
-        if (!(isDeckard))
+    if (!isDeckard)
+    {
+        int fd;
+        if ((fd = open("rom0:ROMVER", O_RDONLY)) >= 0)
         {
-            int fd;
-            if ((fd = open("rom0:ROMVER", O_RDONLY)) >= 0)
+            char romver[16];
+            read(fd, romver, sizeof(romver));
+            close(fd);
+
+            // Handle ROM version for region selection
+            // J - 0
+            // A - 1, 7
+            // E - 2, 3, 5
+            // H - 4
+            // C - 6
+            switch (romver[4])
             {
-                char romver[16];
-                read(fd, romver, sizeof(romver));
-                close(fd);
-
-                // ckeck romver 5th letter: JAEHC, compare with version[0] & 7
-                // J - 0
-                // A - 1, 7
-                // E - 2, 3, 5
-                // H - 4
-                // C - 6
-                if (romver[4] == 'J')
+                case 'J':
                     *region_ciphertext = isDex ? region_ciphertext_japan_dex : region_ciphertext_japan_cex;
-                else if (romver[4] == 'C')
+                    break;
+                case 'C':
                     *region_ciphertext = isDex ? region_ciphertext_china_dex : region_ciphertext_china_cex;
-                else if ((romver[4] == 'E') && ((version[0] & 7) == 3))
-                    *region_ciphertext = isDex ? region_ciphertext_oceania_dex : region_ciphertext_oceania_cex;
-                else if ((romver[4] == 'E') && ((version[0] & 7) == 5))
-                    *region_ciphertext = isDex ? region_ciphertext_russia_dex : region_ciphertext_russia_cex;
-                else if (romver[4] == 'E')
-                    *region_ciphertext = isDex ? region_ciphertext_europe_dex : region_ciphertext_europe_cex;
-                else if ((romver[4] == 'A') && ((version[0] & 7) == 7))
-                    *region_ciphertext = isDex ? region_ciphertext_mexico_dex : region_ciphertext_mexico_cex;
-                else if (romver[4] == 'A')
-                    *region_ciphertext = isDex ? region_ciphertext_usa_dex : region_ciphertext_usa_cex;
-                else if (romver[4] == 'H')
+                    break;
+                case 'E':
+                    if ((version[0] & 7) == 3)
+                        *region_ciphertext = isDex ? region_ciphertext_oceania_dex : region_ciphertext_oceania_cex;
+                    else if ((version[0] & 7) == 5)
+                        *region_ciphertext = isDex ? region_ciphertext_russia_dex : region_ciphertext_russia_cex;
+                    else
+                        *region_ciphertext = isDex ? region_ciphertext_europe_dex : region_ciphertext_europe_cex;
+                    break;
+                case 'A':
+                    if ((version[0] & 7) == 7)
+                        *region_ciphertext = isDex ? region_ciphertext_mexico_dex : region_ciphertext_mexico_cex;
+                    else
+                        *region_ciphertext = isDex ? region_ciphertext_usa_dex : region_ciphertext_usa_cex;
+                    break;
+                case 'H':
                     *region_ciphertext = isDex ? region_ciphertext_asia_dex : region_ciphertext_asia_cex;
+                    break;
             }
         }
     }
@@ -1481,7 +1477,7 @@ int main()
 
     backupNVM();
     checkUnsupportedVersion();
-    checkFMCB();
+    // checkFMCB();
 
     uint8_t *powerTexture = getPowerTexture();
 

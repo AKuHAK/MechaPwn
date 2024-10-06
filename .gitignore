@@ -1,9 +1,17 @@
 *.o
 *.irx
+*_irx.c
 *.s
 *.pyc
 .*
 *.elf
+
+frame*.c
+pwr*.c
+resources/
+!.resources/*.py
+!.resources/*.png
+!.resources/*.ttf
 
 !.github
 !.editorconfig
