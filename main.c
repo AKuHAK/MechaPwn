@@ -839,38 +839,59 @@ char isPatchKnown()
     uint8_t build_date[5];
     uint8_t current_patch[224];
     char ret = 0;
+
+    // Initialize current_patch array to avoid undefined behavior
+    memset(current_patch, 0, sizeof(current_patch));
+
+    // Read NVM and store the patch
     for (int i = 0; i < 112; i++)
+    {
         if (!ReadNVM(400 + i, (uint16_t *)&current_patch[i * 2]))
-            break;
+        {
+            // If ReadNVM fails, exit early
+            return 0;
+        }
+    }
 
     getMechaBuildDate(build_date);
-    uint8_t *patch = (uint8_t *)getOrigPatch(build_date);
 
+    // Check with the original patch
+    uint8_t *patch = (uint8_t *)getOrigPatch(build_date);
     if (patch)
     {
         ret = memcmp(current_patch, patch, 224) == 0;
         free(patch);
         patch = NULL;
-        if (!ret)
+    }
+
+    // If the original patch doesn't match, check with an updated patch
+    if (!ret)
+    {
+        patch = (uint8_t *)getPatch(build_date);
+        if (patch)
         {
-            patch = (uint8_t *)getPatch(build_date);
-            if (patch)
-            {
-                ret = memcmp(current_patch, patch, 224) == 0;
-                free(patch);
-                patch = NULL;
-                if (!ret)
-                {
-                    patch = (uint8_t *)getForceUnlock(build_date);
-                    if (patch)
-                        ret = memcmp(current_patch, orig_patch610_A, 224) == 0;
-                }
-            }
+            ret = memcmp(current_patch, patch, 224) == 0;
+            free(patch);
+            patch = NULL;
+        }
+    }
+
+    // If still no match, check with the forced unlock patch
+    if (!ret)
+    {
+        patch = (uint8_t *)getForceUnlock(build_date);
+        if (patch)
+        {
+            // This check compares to a hardcoded `orig_patch610_A`
+            ret = memcmp(current_patch, orig_patch610_A, 224) == 0;
+            free(patch);
+            patch = NULL;
         }
     }
 
     return ret;
 }
+
 
 void checkFMCB()
 {
@@ -1290,23 +1311,33 @@ void checkUnsupportedVersion()
     }
 
     // todo: fixme: find out why isPatchKnown is crashing
-    /* if (!isPatchKnown())
+    if (!isPatchKnown())
     {
-        uint8_t current_patch[224];
+        struct GSTEXTURE_holder *warnTextures1;
+        struct GSTEXTURE_holder *warnTextures2;
+        // Report that the patch is unknown
+        warnTextures1 = draw_text(8, 8 + big_size + big_size / 2 + 5 * (reg_size + 4), reg_size, 0xFFFFFF, "Unknown patch, please report!\n");
+        warnTextures2 = draw_text(8, 8 + big_size + big_size / 2 + 6 * (reg_size + 4), reg_size, 0xFFFFFF, "Check the console for details.\n");
 
+        // Log the current patch details for reporting purposes
+        uint8_t current_patch[224];
         for (int i = 0; i < 112; i++)
         {
             if (!ReadNVM(400 + i, (uint16_t *)&current_patch[i * 2]))
                 break;
         }
-        warnTextures1 = draw_text(8, 8 + big_size + big_size / 2 + 5 * (reg_size + 4), reg_size, 0xFFFFFF, "Unknown patch, please report!\n");
-        warnTextures2 = ui_printf(8, 8 + big_size + big_size / 2 + 6 * (reg_size + 4), reg_size, 0xFFFFFF, "  %02X %02X %02X %02X %02X\n", current_patch[0], current_patch[1], current_patch[2], current_patch[3], current_patch[4]);
+        ui_printf(8, 8 + big_size + big_size / 2 + 7 * (reg_size + 4), reg_size, 0xFFFFFF, "  %02X %02X %02X %02X %02X\n",
+                  current_patch[0], current_patch[1], current_patch[2], current_patch[3], current_patch[4]);
+        freeGSTEXTURE_holder(warnTextures1);
+        freeGSTEXTURE_holder(warnTextures2);
     }
-    else
-    {
-        warnTextures1 = draw_text(8, 8 + big_size + big_size / 2 + 5 * (reg_size + 4), reg_size, 0xFFFFFF, "\n");
-        warnTextures2 = draw_text(8, 8 + big_size + big_size / 2 + 6 * (reg_size + 4), reg_size, 0xFFFFFF, "\n");
-    } */
+    // else
+    // {
+    //     // Clear any previous warning messages
+    //     warnTextures1 = draw_text(8, 8 + big_size + big_size / 2 + 5 * (reg_size + 4), reg_size, 0xFFFFFF, "\n");
+    //     warnTextures2 = draw_text(8, 8 + big_size + big_size / 2 + 6 * (reg_size + 4), reg_size, 0xFFFFFF, "\n");
+    // }
+
 
 
     struct GSTEXTURE_holder *exitTextures = draw_text(8, 8 + big_size + big_size / 2 + 7 * (reg_size + 4), reg_size, 0xFFFFFF, "Press X to continue.\n");
